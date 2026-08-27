@@ -84,7 +84,26 @@ curl http://localhost:8080/healthz
 
 ## Проверки
 
+Проект использует `go-task`; задачи определены в `Taskfile.yml`:
+
+```bash
+task lint    # golangci-lint (конфиг .golangci.yml, выровнен с ядром)
+task test    # go test ./...
+task vet     # go vet ./...
+task build   # сборка бинаря в bin/
+task run     # запуск приложения
+task generate  # go generate ./... (кодогенерация под будущие контракты)
+```
+
+Без `task` те же проверки доступны напрямую:
+
 ```bash
 go test ./...
 go vet ./...
+```
+
+Для линтера нужен установленный `golangci-lint` v2 (проверено на v2.4.0):
+
+```bash
+go install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.4.0
 ```

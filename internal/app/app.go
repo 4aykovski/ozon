@@ -10,6 +10,7 @@ import (
 )
 
 const shutdownTimeout = 10 * time.Second
+const readHeaderTimeout = 5 * time.Second
 
 // NewHTTPServer creates the HTTP transport used by the service.
 //
@@ -22,7 +23,7 @@ func NewHTTPServer(addr string) *http.Server {
 	return &http.Server{
 		Addr:              addr,
 		Handler:           mux,
-		ReadHeaderTimeout: 5 * time.Second,
+		ReadHeaderTimeout: readHeaderTimeout,
 	}
 }
 
@@ -31,6 +32,7 @@ func Run(ctx context.Context, addr string) error {
 	server := NewHTTPServer(addr)
 
 	errCh := make(chan error, 1)
+
 	go func() {
 		errCh <- server.ListenAndServe()
 	}()
@@ -42,11 +44,13 @@ func Run(ctx context.Context, addr string) error {
 		}
 
 		return fmt.Errorf("serve HTTP: %w", err)
+
 	case <-ctx.Done():
-		shutdownCtx, cancel := context.WithTimeout(context.Background(), shutdownTimeout)
+		shutdownCtx, cancel := context.WithTimeout(context.WithoutCancel(ctx), shutdownTimeout)
 		defer cancel()
 
-		if err := server.Shutdown(shutdownCtx); err != nil {
+		err := server.Shutdown(shutdownCtx)
+		if err != nil {
 			return fmt.Errorf("shutdown HTTP server: %w", err)
 		}
 
