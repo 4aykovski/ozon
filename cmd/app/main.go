@@ -12,9 +12,12 @@ import (
 
 func main() {
 	ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
-	defer stop()
 
-	if err := app.Run(ctx, httpAddr()); err != nil {
+	err := app.Run(ctx, httpAddr())
+
+	stop()
+
+	if err != nil {
 		log.Fatal(err)
 	}
 }

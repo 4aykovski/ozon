@@ -1,0 +1,32 @@
+version: "3"
+
+tasks:
+  build:
+    desc: "build ozon-service binary"
+    cmds:
+      - go build -o bin/ozon-service ./cmd/app/main.go
+
+  run:
+    desc: "run app"
+    cmds:
+      - go run ./cmd/app/main.go
+
+  lint:
+    desc: "run golangci-lint"
+    cmds:
+      - golangci-lint run
+
+  test:
+    desc: "run tests"
+    cmds:
+      - go test ./...
+
+  vet:
+    desc: "run go vet"
+    cmds:
+      - go vet ./...
+
+  generate:
+    desc: "generate code (gRPC contracts, mocks) from directives"
+    cmds:
+      - go generate ./...
