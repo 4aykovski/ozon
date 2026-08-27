@@ -1,0 +1,30 @@
+# Binaries and build artifacts
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+/bin/
+/dist/
+/coverage/
+
+# Go workspace and dependencies
+go.work
+/vendor/
+
+# Local configuration and runtime data
+.env
+.env.*
+!.env.example
+*.log
+/tmp/
+
+# IDE files
+.idea/
+.vscode/
+*.iml
+
+# macOS
+.DS_Store

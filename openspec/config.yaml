@@ -1,0 +1,6 @@
+schema: spec-driven
+
+context: |
+  Go 1.24 service for MarketVision's Ozon marketplace domain.
+  The service owns Ozon Seller API integration and raw Ozon data.
+  All changes require an OpenSpec proposal, design, and task checklist.
